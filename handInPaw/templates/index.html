@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animal Volunteer Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        .nav {
+            margin-bottom: 20px;
+        }
+        .nav a {
+            text-decoration: none;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 3px;
+            color: #333;
+        }
+        .nav a:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/admin">Admin Query Tool</a>
+    </div>
+    <h1>Animal Volunteer Tracker</h1>
+    <p>Welcome to the volunteer tracking system. Log your volunteer hours below.</p>
+    
+    <form action="/log" method="post">
+        <div>
+            <label for="volunteer_name">Your Name:</label>
+            <input type="text" id="volunteer_name" name="volunteer_name" required>
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="animal_name">Animal Name:</label>
+            <input type="text" id="animal_name" name="animal_name" required>
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="location">Location Visited:</label>
+            <select id="location" name="location" required>
+                <option value="">Select a location</option>
+                {% for location in locations %}
+                <option value="{{ location }}">{{ location }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="hours">Hours Volunteered:</label>
+            <input type="number" id="hours" name="hours" min="0.5" step="0.5" required>
+        </div>
+        <div style="margin-top: 15px;">
+            <button type="submit">Log Hours</button>
+        </div>
+    </form>
+    
+    <div style="margin-top: 20px;">
+        <h2>Recent Entries</h2>
+        {% if logs %}
+            <table border="1" style="border-collapse: collapse; width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Volunteer Name</th>
+                        <th>Animal Name</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td>{{ log.volunteer_name }}</td>
+                        <td>{{ log.animal_name }}</td>
+                        <td>{{ log.location }}</td>
+                        <td>{{ log.log_date }}</td>
+                        <td>{{ log.hours }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No entries yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
